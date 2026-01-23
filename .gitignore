@@ -1,0 +1,70 @@
+# =========================
+# Build & temporary files
+# =========================
+*.o
+*.obj
+*.elf
+*.map
+*.lst
+*.d
+*.dep
+
+# =========================
+# IDE / Editor files
+# =========================
+.vscode/
+.idea/
+*.code-workspace
+*.suo
+*.user
+*.userprefs
+*.uvproj
+*.uvprojx
+*.ewp
+*.eww
+*.ewd
+*.launch
+*.cproject
+*.project
+
+# =========================
+# OS generated files
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Compiler output folders
+# =========================
+build/
+Build/
+out/
+bin/
+obj/
+
+# =========================
+# Logs & temp
+# =========================
+*.log
+*.tmp
+*.bak
+*.swp
+
+# =========================
+# Local test artifacts
+# =========================
+example/**/build/
+example/**/out/
+
+# =========================
+# Ignore user local files
+# =========================
+*.exe
+
+# =========================
+# Keep source & headers
+# =========================
+!include/
+!src/
+!example/
