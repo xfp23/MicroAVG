@@ -79,7 +79,7 @@ extern MicroAVG_Status_t MicroAVG_Reset(MicroAVG_Obj_t *obj);
  * @param output Pointer to result buffer
  * @return MicroAVG_Status_t MICROAVG_OK on success, MICROAVG_ERR on invalid parameter
  */
-extern MicroAVG_Status_t MicroAVG_GetResult(MicroAVG_Obj_t *obj,MicroAVG_Value_t *output);
+extern MicroAVG_Value_t MicroAVG_GetResult(MicroAVG_Obj_t *obj);
 
 #ifdef __cplusplus
 }

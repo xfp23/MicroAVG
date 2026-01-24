@@ -59,20 +59,19 @@ MicroAVG_Status_t MicroAVG_Reset(MicroAVG_Obj_t *obj)
     return MICROAVG_OK;
 }
 
-MicroAVG_Status_t MicroAVG_GetResult(MicroAVG_Obj_t *obj, MicroAVG_Value_t *output)
+MicroAVG_Value_t MicroAVG_GetResult(MicroAVG_Obj_t *obj)
 {
-    if (obj == NULL || output == NULL)
+    if (obj == NULL)
     {
-        return MICROAVG_ERR;
+        return (MicroAVG_Value_t)0;
     }
 
     if (obj->count == 0)
     {
-        *output = (MicroAVG_Value_t)0;
-        return MICROAVG_DIVZERO_ERR;
+        return (MicroAVG_Value_t)0;
+        // return MICROAVG_DIVZERO_ERR;
     }
 
     obj->result = (MicroAVG_Value_t)(obj->sum / obj->count);
-    *output = obj->result;
-    return MICROAVG_OK;
+    return obj->result;
 }

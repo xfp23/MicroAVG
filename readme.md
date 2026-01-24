@@ -132,23 +132,9 @@ Retrieve the current averaged result using:
 
 ```c
 MicroAVG_Value_t result;
-MicroAVG_Status_t status;
 
-status = MicroAVG_GetResult(&avg, &result);
+result  = MicroAVG_GetResult(&avg);
 ```
-
-Return values:
-
-* `MICROAVG_OK`
-
-  * Result is valid
-* `MICROAVG_DIVZERO_ERR`
-
-  * No samples have been accumulated yet (`count == 0`)
-  * Output is set to 0
-* `MICROAVG_ERR`
-
-  * Invalid pointer
 
 > ℹ️ This API performs division and is intended for **non-interrupt context** (task / main loop).
 

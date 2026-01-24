@@ -48,19 +48,12 @@ int main(void)
 
         /* --- 模拟处理路径 (通常在主循环或低优先级任务中) --- */
 
-        float avg_voltage = 0.0f;
-        MicroAVG_Status_t status;
+        MicroAVG_Value_t avg_voltage = 0.0f;
 
         // 获取平滑后的结果 (执行除法运算)
-        status = MicroAVG_GetResult(&voltage_avg, &avg_voltage);
+        avg_voltage = MicroAVG_GetResult(&voltage_avg);
 
-        if (status == MICROAVG_OK) {
-            // 滤波结果有效
-            // printf("Average Voltage: %.3f V\n", avg_voltage);
-        } 
-        else if (status == MICROAVG_DIVZERO_ERR) {
-            // 缓冲区尚无数据
-        }
+        printf("avg filter result : %d",avg_voltage);
 
         /* 模拟延时 */
         // Delay_ms(10);

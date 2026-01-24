@@ -140,26 +140,10 @@ MICROAVG_ERR      // 无效的对象指针
 
 ```c
 MicroAVG_Value_t result;
-MicroAVG_Status_t status;
 
-status = MicroAVG_GetResult(&avg, &result);
+result = MicroAVG_GetResult(&avg);
 
 ```
-
-返回值：
-
-* `MICROAVG_OK`
-* 结果有效。
-
-
-* `MICROAVG_DIVZERO_ERR`
-* 尚未累积任何样本（`count == 0`）。
-* 输出值被设为 0。
-
-
-* `MICROAVG_ERR`
-* 无效的指针。
-
 
 
 > ℹ️ **提示**：此 API 涉及除法运算，建议在 **非中断上下文**（任务 / 主循环）中使用。
