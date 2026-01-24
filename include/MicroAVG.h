@@ -46,7 +46,7 @@ extern "C"
  * @param obj Pointer to MicroAVG object
  * @return MICROAVG_OK on success, MICROAVG_ERR on invalid parameter
  */
-MicroAVG_Status_t MicroAVG_Init(MicroAVG_Obj_t *obj);
+extern MicroAVG_Status_t MicroAVG_Init(MicroAVG_Obj_t *obj);
 
 /**
  * @brief Update sliding average with a new input sample.
@@ -56,9 +56,9 @@ MicroAVG_Status_t MicroAVG_Init(MicroAVG_Obj_t *obj);
  *
  * @param obj   Pointer to MicroAVG object
  * @param input New input sample
- * @return Current averaged value
+ * @return MICROAVG_OK on success, MICROAVG_ERR on invalid parameter
  */
-MicroAVG_Value_t MicroAVG_Update(MicroAVG_Obj_t *obj, MicroAVG_Value_t input);
+extern MicroAVG_Status_t MicroAVG_Update(MicroAVG_Obj_t *obj, MicroAVG_Value_t input);
 
 /**
  * @brief Reset internal state of the MicroAVG object.
@@ -70,7 +70,16 @@ MicroAVG_Value_t MicroAVG_Update(MicroAVG_Obj_t *obj, MicroAVG_Value_t input);
  * @param obj Pointer to MicroAVG object
  * @return MICROAVG_OK on success, MICROAVG_ERR on invalid parameter
  */
-MicroAVG_Status_t MicroAVG_Reset(MicroAVG_Obj_t *obj);
+extern MicroAVG_Status_t MicroAVG_Reset(MicroAVG_Obj_t *obj);
+
+/**
+ * @brief Get avg result of the MicroAVG object.
+ * 
+ * @param obj Pointer to MicroAVG object
+ * @param output Pointer to result buffer
+ * @return MicroAVG_Status_t MICROAVG_OK on success, MICROAVG_ERR on invalid parameter
+ */
+extern MicroAVG_Status_t MicroAVG_GetResult(MicroAVG_Obj_t *obj,MicroAVG_Value_t *output);
 
 #ifdef __cplusplus
 }

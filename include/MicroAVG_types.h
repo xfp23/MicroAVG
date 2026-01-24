@@ -24,7 +24,8 @@ extern "C"
 typedef enum
 {
     MICROAVG_OK = 0,
-    MICROAVG_ERR
+    MICROAVG_ERR,
+    MICROAVG_DIVZERO_ERR,
 } MicroAVG_Status_t;
 
 /* ================= Value Type Definition ================= */
@@ -57,12 +58,12 @@ typedef MICROAVG_ACC_T MicroAVG_Acc_t;
 
 typedef struct
 {
-    MicroAVG_Value_t buffer[MICROAVG_DEPTH];
-    MicroAVG_Idx_t   index;
-    MicroAVG_Idx_t   count;
-    MicroAVG_Idx_t   depth; 
-    MicroAVG_Acc_t sum;
-    MicroAVG_Value_t result;
+    volatile MicroAVG_Value_t buffer[MICROAVG_DEPTH];
+    volatile MicroAVG_Idx_t   index;
+    volatile MicroAVG_Idx_t   count;
+    volatile MicroAVG_Idx_t   depth; 
+    volatile MicroAVG_Acc_t sum;
+    volatile MicroAVG_Value_t result; // debug use
 } MicroAVG_Obj_t;
 
 #ifdef __cplusplus

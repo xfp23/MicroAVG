@@ -12,14 +12,13 @@ MicroAVG_Status_t MicroAVG_Init(MicroAVG_Obj_t *obj)
     return MICROAVG_OK;
 }
 
-
-MicroAVG_Value_t MicroAVG_Update(MicroAVG_Obj_t *obj, MicroAVG_Value_t input)
+MicroAVG_Status_t MicroAVG_Update(MicroAVG_Obj_t *obj, MicroAVG_Value_t input)
 {
     MicroAVG_Value_t old;
 
     if (obj == NULL)
     {
-        return (MicroAVG_Value_t)0;
+        return MICROAVG_ERR;
     }
 
     old = obj->buffer[obj->index];
@@ -42,19 +41,38 @@ MicroAVG_Value_t MicroAVG_Update(MicroAVG_Obj_t *obj, MicroAVG_Value_t input)
         obj->sum -= old;
     }
 
-    return (MicroAVG_Value_t)(obj->sum / obj->count);
+    // return (MicroAVG_Value_t)(obj->sum / obj->count);
+    return MICROAVG_OK;
 }
 
 MicroAVG_Status_t MicroAVG_Reset(MicroAVG_Obj_t *obj)
 {
-    if(!obj)
+    if (!obj)
     {
         return MICROAVG_ERR;
     }
 
     obj->index = 0;
     obj->count = 0;
-    obj->sum   = 0;
-    
+    obj->sum = 0;
+
+    return MICROAVG_OK;
+}
+
+MicroAVG_Status_t MicroAVG_GetResult(MicroAVG_Obj_t *obj, MicroAVG_Value_t *output)
+{
+    if (obj == NULL || output == NULL)
+    {
+        return MICROAVG_ERR;
+    }
+
+    if (obj->count == 0)
+    {
+        *output = (MicroAVG_Value_t)0;
+        return MICROAVG_DIVZERO_ERR;
+    }
+
+    obj->result = (MicroAVG_Value_t)(obj->sum / obj->count);
+    *output = obj->result;
     return MICROAVG_OK;
 }

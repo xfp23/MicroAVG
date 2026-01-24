@@ -12,7 +12,7 @@
 
 It is intended to be used as a reusable component for smoothing physical-domain signals such as temperature, pressure, voltage, or current.
 
-MicroAVG is **not tied to ADC hardware** and does **not use dynamic memory allocation**.
+MicroAVG is **not tied to ADC hardware**, does **not use dynamic memory allocation**, and is suitable for **ISR-driven data paths**.
 
 ---
 
@@ -21,7 +21,8 @@ MicroAVG is **not tied to ADC hardware** and does **not use dynamic memory alloc
 * Fixed-size sliding window (compile-time configurable)
 * No dynamic memory allocation
 * User-configurable sample data type
-* Deterministic execution time
+* Deterministic execution time (O(1) per update)
+* ISR-friendly update path (no division)
 * Platform and signal-source independent
 
 ---
@@ -30,6 +31,8 @@ MicroAVG is **not tied to ADC hardware** and does **not use dynamic memory alloc
 
 All user configuration is done in **`MicroAVG_conf.h`**.
 Do **not** modify component source files.
+
+---
 
 ### 1. Window Depth
 
@@ -56,7 +59,7 @@ You may override this by defining `MICROAVG_VALUE_T`:
 Examples:
 
 ```c
-#define MICROAVG_VALUE_T int16_t   // Fixed-point input
+#define MICROAVG_VALUE_T int16_t   // Fixed-point physical values
 #define MICROAVG_VALUE_T int32_t
 ```
 
@@ -64,7 +67,7 @@ Examples:
 
 ---
 
-### 3. Advanced Configuration (Optional)
+### 3. Accumulator Type (Advanced)
 
 The accumulator type is internally separated from the sample type to ensure numerical safety.
 
@@ -74,11 +77,11 @@ Advanced users may override it if necessary:
 #define MICROAVG_ACC_T float
 ```
 
-> ⚠️ Do not change this unless you fully understand the numeric range of your data.
+> ⚠️ Do not change this unless you fully understand the numeric range and overflow risk of your data.
 
 ---
 
-## Usage
+## API Usage
 
 ### 1. Declare an Object
 
@@ -96,25 +99,62 @@ Call once before use, typically during system initialization:
 MicroAVG_Init(&avg);
 ```
 
+* Clears internal buffer and state
+* Must be called before any update or read operation
+
 ---
 
-### 3. Update with New Samples
+### 3. Update with New Samples (ISR-safe)
 
-Call `MicroAVG_Update()` whenever a new sample is available:
+Call `MicroAVG_Update()` whenever a new sample is available.
 
 ```c
-float filtered;
-
-filtered = MicroAVG_Update(&avg, input_value);
+MicroAVG_Update(&avg, input_value);
 ```
 
 * Pushes a new sample into the sliding window
-* Updates internal state
-* Returns the current averaged result
+* Updates internal sum, index, and count
+* **Does not perform division**
+* Designed to be safely callable from an interrupt context
+
+Return value:
+
+```c
+MICROAVG_OK        // Update successful
+MICROAVG_ERR       // Invalid object pointer
+```
 
 ---
 
-### 4. Reset When Needed
+### 4. Get Averaged Result (Non-ISR)
+
+Retrieve the current averaged result using:
+
+```c
+MicroAVG_Value_t result;
+MicroAVG_Status_t status;
+
+status = MicroAVG_GetResult(&avg, &result);
+```
+
+Return values:
+
+* `MICROAVG_OK`
+
+  * Result is valid
+* `MICROAVG_DIVZERO_ERR`
+
+  * No samples have been accumulated yet (`count == 0`)
+  * Output is set to 0
+* `MICROAVG_ERR`
+
+  * Invalid pointer
+
+> ℹ️ This API performs division and is intended for **non-interrupt context** (task / main loop).
+
+---
+
+### 5. Reset When Needed
 
 To clear internal history and restart averaging:
 
@@ -124,9 +164,9 @@ MicroAVG_Reset(&avg);
 
 Typical use cases:
 
-* Mode changes
+* Mode transitions
 * Sensor recovery
-* Control logic reset
+* Control logic reinitialization
 * Debug or forced-control transitions
 
 Reset clears internal state but **keeps configuration unchanged**.
@@ -136,9 +176,10 @@ Reset clears internal state but **keeps configuration unchanged**.
 ## Design Notes
 
 * MicroAVG operates on **physical-domain values**, not raw sensor codes
-* The component maintains no external dependencies
-* Output value is returned directly by `MicroAVG_Update()`
-* Internal buffer contents are implementation details and not part of the API
+* Update and result computation are intentionally separated
+* ISR path contains only constant-time arithmetic operations
+* Division is deferred to non-real-time context
+* Internal buffer layout is an implementation detail and not part of the API
 
 ---
 
@@ -149,9 +190,11 @@ ADC Raw Data
     ↓
 Physical Unit Conversion
     ↓
-MicroAVG_Update()
+MicroAVG_Update()   (ISR / fast path)
     ↓
-Control / Monitoring / Reporting
+MicroAVG_GetResult() (task / main loop)
+    ↓
+Control / Monitoring / Logging
 ```
 
 ---
