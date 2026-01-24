@@ -42,7 +42,7 @@ extern "C"
  * Sliding window depth (sample count)
  * Large value will increase RAM usage.
  */
-#define MICROAVG_DEPTH              80
+#define MICROAVG_DEPTH              (80u)
 
 /* ================= Feature Switch ================= */
 /*
