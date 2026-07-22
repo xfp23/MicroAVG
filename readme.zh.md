@@ -200,6 +200,6 @@ MicroAVG_GetResult() (任务 / 主循环)
 ## 许可证
 
 Copyright (c) 2026
-作者: [https://github.com/xfp23](https://github.com/xfp23)
+作者: [https://xfp23.github.io](https://xfp23.github.io)
 
 ---

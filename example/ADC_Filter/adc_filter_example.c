@@ -1,6 +1,6 @@
 /**
  * @file adc_filter_example.c
- * @author https://github.com/xfp23
+ * @author https://xfp23.github.io
  * @brief MicroAVG 示例：对物理域电压进行滑动平均滤波
  * @version 0.2 (适配最新 API)
  * @date 2026-01-24

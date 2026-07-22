@@ -188,6 +188,6 @@ Control / Monitoring / Logging
 ## License
 
 Copyright (c) 2026
-Author: [https://github.com/xfp23](https://github.com/xfp23)
+Author: [https://xfp23.github.io](https://xfp23.github.io)
 
 ---

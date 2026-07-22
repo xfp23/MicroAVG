@@ -1,6 +1,6 @@
 /**
  * @file MicroAVG_types.h
- * @author https://github.com/xfp23
+ * @author https://xfp23.github.io
  * @brief MicroAVG type definitions
  * @version 0.1
  * @date 2026-01-23
