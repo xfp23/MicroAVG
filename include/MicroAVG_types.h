@@ -13,6 +13,9 @@
 
 #include "MicroAVG_conf.h"
 #include <stdint.h>
+#if MICROAVG_USE_MEM
+#include "MicroMem.h"
+#endif
 
 #ifdef __cplusplus
 extern "C"
@@ -26,6 +29,7 @@ typedef enum
     MICROAVG_OK = 0,
     MICROAVG_ERR,
     MICROAVG_DIVZERO_ERR,
+    MICROAVG_MEM_ERR,
 } MicroAVG_Status_t;
 
 /* ================= Value Type Definition ================= */
@@ -53,18 +57,29 @@ typedef float MicroAVG_Acc_t;
 typedef MICROAVG_ACC_T MicroAVG_Acc_t;
 #endif
 
+typedef struct 
+{
+    uint32_t depth; // 滤波深度
+} MicroAVG_Conf_t;
 
 /* ================= Object Definition ================= */
 
 typedef struct
 {
+#if MICROAVG_USE_MEM
+    MicroAVG_Value_t *buffer;
+    MicroAVG_Conf_t conf; 
+#else
     volatile MicroAVG_Value_t buffer[MICROAVG_DEPTH];
-    volatile MicroAVG_Idx_t   index;
-    volatile MicroAVG_Idx_t   count;
-    volatile MicroAVG_Idx_t   depth; 
+#endif
+    volatile MicroAVG_Idx_t index;
+    volatile MicroAVG_Idx_t count;
+    volatile MicroAVG_Idx_t depth;
     volatile MicroAVG_Acc_t sum;
     volatile MicroAVG_Value_t result; // debug use
 } MicroAVG_Obj_t;
+
+typedef MicroAVG_Obj_t *MicroAVG_Handle_t;
 
 #ifdef __cplusplus
 }

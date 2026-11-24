@@ -37,6 +37,42 @@ extern "C"
 {
 #endif
 
+#if MICROAVG_USE_MEM
+
+/**
+ * @brief 
+ * 
+ * @param handle 
+ * @param conf 
+ * @return MicroAVG_Status_t 
+ */
+extern MicroAVG_Status_t MicroAVG_Init(MicroAVG_Handle_t *handle, MicroAVG_Conf_t *conf);
+
+/**
+ * @brief 
+ * 
+ * @param handle 
+ * @param input 
+ * @return MicroAVG_Status_t 
+ */
+extern MicroAVG_Status_t MicroAVG_Update(MicroAVG_Handle_t handle, MicroAVG_Value_t input);
+
+/**
+ * @brief 
+ * 
+ * @param handle 
+ * @return MicroAVG_Status_t 
+ */
+extern MicroAVG_Status_t MicroAVG_Reset(MicroAVG_Handle_t handle);
+
+/**
+ * @brief 
+ * 
+ * @param handle 
+ * @return MicroAVG_Value_t 
+ */
+extern MicroAVG_Value_t MicroAVG_GetResult(MicroAVG_Handle_t handle);
+#else
 /**
  * @brief Initialize a MicroAVG object.
  *
@@ -80,6 +116,7 @@ extern MicroAVG_Status_t MicroAVG_Reset(MicroAVG_Obj_t *obj);
  * @return MicroAVG_Status_t MICROAVG_OK on success, MICROAVG_ERR on invalid parameter
  */
 extern MicroAVG_Value_t MicroAVG_GetResult(MicroAVG_Obj_t *obj);
+#endif
 
 #ifdef __cplusplus
 }

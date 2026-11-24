@@ -21,7 +21,9 @@ extern "C"
 
 /* ================= Version ================= */
 
-#define MICROAVG_VERSION            "0.0.1"
+#define MICROAVG_VERSION            "1.0.1"
+
+#define MICROAVG_USE_MEM 1u
 
 /* ================= Value Type Configuration ================= */
 /*
